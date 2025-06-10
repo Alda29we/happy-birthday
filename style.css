@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Botón de Cumpleaños 🎉</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+    body {
+      --frosting: hsl(var(--frosting-hue, 0), 100%, 55%);
+      --lightness: 50;
+      --flame: 0;
+      --glow-hue: 40;
+      --glow-saturation: 50;
+      --glow-lightness: 35;
+      --glow-alpha: 0.4;
+      --transparency-alpha: 0;
+      --glow: hsla(var(--glow-hue), calc(var(--glow-saturation) * 1%), calc(var(--glow-lightness) * 1%), var(--glow-alpha));
+      --transparent: hsla(0, 0%, 0%, var(--transparency-alpha));
+      display: flex;
+      overflow: hidden;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      background: hsl(180, 30%, calc(var(--lightness, 50) * 1%));
+      margin: 0;
+    }
+
+    .birthday-button {
+      position: relative;
+      transform: scale(0.8);
+      cursor: pointer;
+    }
+
+    .birthday-button__button {
+      width: 240px;
+      height: 100px;
+      position: relative;
+      border: 0;
+      background: #f2f2f2;
+      border-radius: 14px;
+      cursor: pointer;
+    }
+
+    .birthday-button__text {
+      position: absolute;
+      top: 0;
+      left: 0;
+      height: 100%;
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+      font-family: sans-serif;
+      font-weight: bold;
+    }
+
+    .birthday-button__text .char {
+      display: inline-block;
+      color: hsl(var(--hue, 0), calc(var(--char-sat, 0) * 1%), calc(var(--char-light, 0) * 1%));
+    }
+
+    .birthday-button:before {
+      content: '';
+      position: absolute;
+      height: 240px;
+      width: 240px;
+      background: radial-gradient(var(--glow), var(--transparent) 30%), radial-gradient(var(--glow), var(--transparent) 50%);
+      border-radius: 50%;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -70%) scale(calc(var(--flame) * 3));
+      z-index: 2;
+      filter: blur(15px);
+      opacity: var(--flame);
+    }
+
+    .birthday-button__cake {
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      transform: translate(-50%, 0);
+      width: 289.5px;
+      display: none;
+    }
+
+    .cake__eye-body { fill: #1a1a1a; }
+    .cake__eye-pupil { fill: #fff; }
+    .cake__tongue { fill: #c12115; }
+    .cake__mouth-opening { fill: #1a1a1a; stroke: #1a1a1a; }
+    .cake__sprinkle {
+      fill: hsl(0, 100%, 75%);
+    }
+    .cake__frosting--start,
+    .cake__frosting--duplicate {
+      fill: var(--frosting);
+    }
+    .candle__flame { opacity: var(--flame); }
+    .candle__flame-outer { fill: #ff711f; }
+    .candle__flame-inner { fill: #edca1d; }
+  </style>
+
+  <!-- GSAP -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <!-- MorphSVGPlugin oficial (gratis) -->
+  <script src="https://assets.codepen.io/16327/MorphSVGPlugin.min.js"></script>
+  <!-- Splitting.js -->
+  <script src="https://unpkg.com/splitting/dist/splitting.min.js"></script>
+</head>
+<body>
+
+<div class="birthday-button">
+  <button class="birthday-button__button"></button>
+  <div class="birthday-button__text">
+    <span class="char">¡</span>
+    <span class="char">F</span>
+    <span class="char">e</span>
+    <span class="char">l</span>
+    <span class="char">i</span>
+    <span class="char">z</span>
+    <span class="whitespace">&nbsp;</span>
+    <span class="char">C</span>
+    <span class="char">u</span>
+    <span class="char">m</span>
+    <span class="char">p</span>
+    <span class="char">l</span>
+    <span class="char">e</span>
+    <span class="char">a</span>
+    <span class="char">ñ</span>
+    <span class="char">o</span>
+    <span class="char">s</span>
+    <span class="char">!</span>
+  </div>
+
+  <!-- SVG simple de pastel -->
+  <svg class="birthday-button__cake" viewBox="0 0 200 200">
+    <!-- Base del pastel -->
+    <rect x="40" y="100" width="120" height="50" rx="10" ry="10" fill="#fcbf49" stroke="#a06c00" stroke-width="3"/>
+    <!-- Cobertura -->
+    <path class="cake__frosting--start" d="M40 100 Q60 90 80 100 Q100 110 120 100 Q140 90 160 100 L160 120 L40 120 Z" fill="#fff"/>
+    <!-- Velas -->
+    <g class="cake__candle" transform="translate(70,80)">
+      <rect width="10" height="20" fill="#ff595e"/>
+      <circle class="candle__flame" r="5" cx="5" cy="-5" />
+    </g>
+    <g class="cake__candle" transform="translate(100,80)">
+      <rect width="10" height="20" fill="#ffca3a"/>
+      <circle class="candle__flame" r="5" cx="5" cy="-5" />
+    </g>
+    <g class="cake__candle" transform="translate(130,80)">
+      <rect width="10" height="20" fill="#8ac926"/>
+      <circle class="candle__flame" r="5" cx="5" cy="-5" />
+    </g>
+  </svg>
+</div>
+
+<!-- Control de audio -->
+<input type="checkbox" id="volume" hidden />
+<label for="volume">
+  <svg viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4l-5 5H3z"/></svg>
+  <svg viewBox="0 0 24 24"><path d="M16.5 12c0-1.77-1.02-3.29-2.5-4.03v8.05A4.982 4.982 0 0 0 16.5 12zM14 3.23v2.06c3.39.49 6 3.39 6 6.71s-2.61 6.22-6 6.71v2.06c4.45-.52 8-4.27 8-8.77s-3.55-8.25-8-8.77z"/></svg>
+</label>
+
+<!-- Tu código de animación -->
+<script>
+  Splitting();
+
+  const BTN = document.querySelector('.birthday-button__button');
+  const CHARS = document.querySelectorAll('.char');
+
+  BTN.addEventListener('click', () => {
+    gsap.to(BTN, { scale: 1.2, duration: 0.3, yoyo: true, repeat: 1 });
+    gsap.to(CHARS, {
+      '--char-sat': 80,
+      '--char-light': 70,
+      y: () => gsap.utils.random(-50, -150),
+      x: () => gsap.utils.random(-50, 50),
+      opacity: 0,
+      duration: 1,
+      ease: "power1.out",
+      stagger: 0.05
+    });
+
+    gsap.to('.birthday-button__cake', { display: 'block', scale: 1, duration: 0.3 });
+    gsap.to('.candle__flame', { opacity: 1, duration: 0.5 });
+  });
+</script>
+
+</body>
+</html>
